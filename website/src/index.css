@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css?family=Oswald");
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+/* Use the Sofia font in your styles */
+body {
+  font-family: "Sofia", Oswald !important;
+}
+a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.text {
+  font-family: "Poppins", Poppins !important;
+  font-size: 14px;
+  text-align: justify;
+}
+.text-title {
+  font-family: "Poppins", Poppins !important;
+}
+.vertical-seperator{
+  border-right: 1px solid black;
+}
