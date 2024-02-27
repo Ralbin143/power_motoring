@@ -1,0 +1,136 @@
+body {
+  background-color: #f0f0f0;
+}
+
+* {
+  font-family: "Poppins";
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+.app-layout {
+  display: flex;
+  position: relative;
+}
+
+aside {
+  background-color: #fff;
+  height: 100vh;
+  padding: 10px;
+  width: 250px;
+  border-right: 1px dashed #e0e0e0;
+}
+
+.topbar {
+  background-color: white;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logged-user-container {
+  border: 1px dashed #cdcd;
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+main {
+  padding: 10px;
+  width: 100%;
+  overflow: auto;
+  height: 93vh;
+  /* height: 100%; */
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.vehiclce-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 20px;
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px; */
+}
+
+.vehiclce-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
+}
+
+.vehicle-grid-items {
+  border: none;
+  /* width: 350px; */
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.vehicle-grid-items:hover {
+  transform: scale(1.02);
+  transition: 0.25s;
+  cursor: pointer;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.vehiclce-grid-image {
+  width: 150px;
+  height: 100px;
+  object-fit: contain;
+}
+
+/* Add Vehicles */
+.section {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 15px;
+}
+
+.add_vehicle_container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 20px;
+}
+
+.vehiclce-grid-radio-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-color-image-preview {
+  /* width: 200px; */
+  height: 150px;
+  object-fit: cover;
+}
+
+.position-close-btn {
+  position: absolute;
+  top: -16px;
+  right: -9px;
+  font-size: 20px;
+  color: grey;
+  cursor: pointer;
+}
