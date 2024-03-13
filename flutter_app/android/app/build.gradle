@@ -70,4 +70,5 @@ dependencies {
     implementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-analytics")
     implementation('com.google.android.material:material:1.11.0')
+    implementation("com.android.billingclient:billing:6.2.0")
 }
