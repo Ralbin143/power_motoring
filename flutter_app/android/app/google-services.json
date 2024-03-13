@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "59221338803",
+    "project_id": "power-motoring-app",
+    "storage_bucket": "power-motoring-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59221338803:android:f8512ee4b2e93e9cf9dec6",
+        "android_client_info": {
+          "package_name": "com.power_motoring.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59221338803-3t64464b6g6qacsbq4lpn20bq5lrbjsj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.power_motoring.app",
+            "certificate_hash": "4cee26fa5be8c7364833ac0c941209e3d2cb4d0f"
+          }
+        },
+        {
+          "client_id": "59221338803-v0723rrt4g3gilde84noifuhn634q1nu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6K5pya5wH2kvkevT_EmvSxQ8hmcxqd4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59221338803-v0723rrt4g3gilde84noifuhn634q1nu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "59221338803-kdtrs548956cdfku6qkf814ut2ue5594.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.powerMotoring.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
