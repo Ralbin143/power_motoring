@@ -14,6 +14,7 @@ class TermsConditions extends StatefulWidget {
 class _TermsConditionsState extends State<TermsConditions> {
   bool value = false;
   late final WebViewController controller;
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -23,9 +24,15 @@ class _TermsConditionsState extends State<TermsConditions> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            const CircularProgressIndicator.adaptive();
+            setState(() {
+              loading = false;
+            });
           },
-          onPageStarted: (String url) {},
+          onPageStarted: (String url) {
+            setState(() {
+              loading = true;
+            });
+          },
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
@@ -70,11 +77,23 @@ class _TermsConditionsState extends State<TermsConditions> {
           ),
         ),
         SizedBox(
-            height: MediaQuery.of(context).size.height - 160,
-            width: double.infinity,
-            child: WebViewWidget(
-              controller: controller,
-            )),
+          height: MediaQuery.of(context).size.height - 160,
+          width: double.infinity,
+          child: loading
+              ? const SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                )
+              : WebViewWidget(
+                  controller: controller,
+                ),
+        ),
         Row(
           children: [
             Checkbox(
