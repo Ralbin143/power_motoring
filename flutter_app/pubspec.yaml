@@ -65,6 +65,7 @@ dependencies:
   equatable: ^2.0.5
   syncfusion_flutter_gauges: ^24.2.7
   in_app_purchase: ^3.1.13
+  in_app_purchase_storekit: ^0.3.13+1
 
 dev_dependencies:
   flutter_test:
