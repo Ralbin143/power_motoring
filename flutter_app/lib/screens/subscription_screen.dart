@@ -64,15 +64,36 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
 // GOOGLE START
   void initiatePurchase() async {
-    // Get the available products for sale
-    ProductDetailsResponse productDetailsResponse =
-        await _inAppPurchase.queryProductDetails({'01235'});
+    const Set<String> _kIds = <String>{'01235', '01234', '1233'};
+    final ProductDetailsResponse response =
+        await InAppPurchase.instance.queryProductDetails(_kIds);
 
-    ProductDetails productDetails = productDetailsResponse.productDetails.first;
+    List<ProductDetails> products = response.productDetails;
+
+    // final ProductDetails productDetails = ;
+
+    final ProductDetailsResponse productDetailResponse =
+        await _inAppPurchase.queryProductDetails(response.toSet());
 
     final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
-    _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+        PurchaseParam(productDetails: productDetailResponse);
+    InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
+// if (_isConsumable(productDetails)) {
+//   InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+// } else {
+//   InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
+// }
+// From here the purchase flow will be handled by the underlying store.
+// Updates will be delivered to the `InAppPurchase.instance.purchaseStream`.
+    // -------------------------[OLD]---------------------
+    // ProductDetailsResponse productDetailsResponse =
+    //     await _inAppPurchase.queryProductDetails({'01235'});
+
+    // ProductDetails productDetails = productDetailsResponse.productDetails.first;
+
+    // final PurchaseParam purchaseParam =
+    //     PurchaseParam(productDetails: productDetails);
+    // _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
   }
 // GOOGLE END
 
