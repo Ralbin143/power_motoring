@@ -1,6 +1,7 @@
 import React from "react";
 import downloadImage from "../../assets/Screenshot_20240130_213648.jpg";
 import google from "../../assets/google-play-badge.png";
+import apple from "../../assets/app-store-logo.png";
 
 function DownloadApp() {
   const imgPro = {
@@ -31,7 +32,54 @@ function DownloadApp() {
             managing your vehicle – download it today and experience a new level
             of automotive empowerment!
           </p>
-          <img src={google} alt="" />
+          <p>
+            The beta version has been released, and currently, the app is
+            available only for Android through this website. Additionally, it is
+            not yet available on the Play Store or the App Store, but it will be
+            available soon.
+          </p>
+          <div className="row">
+            <div className="col-12 col-md-4 pt-3">
+              <a href={"../../assets/beta_1.0.apk"} download={true}>
+                <u
+                  style={{
+                    textDecoration: "underline !important",
+                    color: "green !important",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Click here to Download <br /> Beta 1.0 (Android Only)
+                </u>
+              </a>
+            </div>
+            <div className="col-12 col-md-4  pt-3">
+              <strong>Coming Soon</strong>
+              <br />
+              <img
+                src={google}
+                alt=""
+                style={{
+                  filter: "grayscale(1)",
+                  opacity: ".5",
+                  height: "60px",
+                }}
+              />
+            </div>
+            <div className="col-12 col-md-4 pt-3">
+              <strong>Coming Soon</strong>
+              <br />
+              <img
+                src={apple}
+                alt=""
+                style={{
+                  filter: "grayscale(1)",
+                  opacity: ".5",
+                  height: "60px",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

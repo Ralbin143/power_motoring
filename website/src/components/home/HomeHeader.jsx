@@ -1,7 +1,6 @@
 import React from "react";
 import "./header.css";
 import logoImage from "../../assets/logo.25acdb35f6bb32434d95.png";
-import { ScrollLink } from "react-scroll";
 
 function HomeHeader() {
   const logo = {
@@ -10,7 +9,7 @@ function HomeHeader() {
 
   return (
     <div className="container">
-      <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center justify-content-between xxx">
         <a href="/">
           <img src={logoImage} style={logo} />
         </a>
