@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +40,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   bool trialUsed = false;
 
+  // GOOGLE PAY A
+  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
+
   @override
   void initState() {
     _razorpay = Razorpay();
@@ -48,8 +54,27 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     loadSubsscriptionData();
     isTrialUsed();
     loadSubsscriptionData();
+
+    _inAppPurchase.purchaseStream.listen((purchaseDetailsList) {
+      print('Item purchased: $purchaseDetailsList');
+    });
+    // _inAppPurchase.connect();
     super.initState();
   }
+
+// GOOGLE START
+  void initiatePurchase() async {
+    // Get the available products for sale
+    ProductDetailsResponse productDetailsResponse =
+        await _inAppPurchase.queryProductDetails({'01235'});
+
+    ProductDetails productDetails = productDetailsResponse.productDetails.first;
+
+    final PurchaseParam purchaseParam =
+        PurchaseParam(productDetails: productDetails);
+    _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+  }
+// GOOGLE END
 
   void isTrialUsed() async {
     final prefs = await SharedPreferences.getInstance();
@@ -174,6 +199,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ),
                       const SizedBox(height: 20),
                       _subscription(),
+                      ElevatedButton(
+                        onPressed: () {
+                          initiatePurchase();
+                        },
+                        child: Text('Google PAY'),
+                      )
                     ],
                   ),
           ),
@@ -187,15 +218,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       child: isSubscribed
           ? Column(
               children: [
-                maximumValue == 3
+                maximumValue == 7
                     ? PrettyGauge(
                         gaugeSize: 150,
                         minValue: 0.0,
                         maxValue: maximumValue,
                         segments: [
-                          GaugeSegment('Low', 1, Colors.red),
-                          GaugeSegment('Medium', 0, Colors.orange),
-                          GaugeSegment('High', 2, Colors.green),
+                          GaugeSegment('Low', 2, Colors.red),
+                          GaugeSegment('Medium', 1, Colors.orange),
+                          GaugeSegment('High', 4, Colors.green),
                         ],
                         currentValue: currentDateValue,
                         displayWidget: Text(
@@ -235,7 +266,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             annotations: <GaugeAnnotation>[
                               GaugeAnnotation(
                                   widget: Text(
-                                    '${(currentDateValue - 1).toStringAsFixed(0)} day(s)',
+                                    '${(currentDateValue).toStringAsFixed(0)} day(s)',
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
@@ -311,7 +342,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   addTrial(context);
                 },
                 child: Text(
-                  'Try 3 Day Trial',
+                  'Try 7 Days Trial',
                   style: GoogleFonts.poppins(),
                 ),
               ),

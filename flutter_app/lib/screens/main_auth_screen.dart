@@ -158,22 +158,28 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
         prefs.setString(
             "displayImage", userCredential.user!.photoURL.toString());
         Navigator.of(_key.currentContext!).pop();
-        if (json["deviceID"] != "" && json["deviceID"] != deviceId) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  AlreadyLoggedInScreen(userID: json["userID"]),
-            ),
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-          );
-        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+        // if (json["deviceID"] != "" && json["deviceID"] != deviceId) {
+        //   Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) =>
+        //           AlreadyLoggedInScreen(userID: json["userID"]),
+        //     ),
+        //   );
+        // } else {
+        //   Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => const HomeScreen(),
+        //     ),
+        //   );
+        // }
       } else {
         const snackBar = SnackBar(
           content: Text('Oops! Something went wrong!'),

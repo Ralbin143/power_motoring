@@ -215,14 +215,14 @@ const currentSubscriptionData = async (req, res) => {
         }
 
         const remainingDaysx = Math.ceil(
-          (addDaysToDate(userData[0].lastPaymentDate, 3) - today) /
+          (addDaysToDate(userData[0].lastPaymentDate, 7) - today) /
             (1000 * 60 * 60 * 24)
         );
         return res.status(200).json({
-          maxDays: 3,
+          maxDays: 7,
           daysSinceLastPayment: remainingDaysx,
           expiryDate: moment(
-            addDaysToDate(userData[0].lastPaymentDate, 3)
+            addDaysToDate(userData[0].lastPaymentDate, 7)
           ).format("DD-MM-YYYY"),
         });
       } else {

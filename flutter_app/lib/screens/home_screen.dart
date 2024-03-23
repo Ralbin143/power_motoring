@@ -610,7 +610,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'Login',
+                        'Login & Subscribe',
                       ),
                     ],
                   ),

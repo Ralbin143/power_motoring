@@ -15,7 +15,6 @@ import 'package:power_motoring/data/repository/subscription_repository.dart';
 import 'package:power_motoring/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
 import 'const/urls.dart';
 import 'firebase_api.dart';
 import 'screens/splash_screen.dart';
@@ -27,6 +26,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseInAppMessaging inAppMessaging = await FirebaseInAppMessaging.instance;
   final remoteConfig = FirebaseRemoteConfig.instance;
