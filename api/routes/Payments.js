@@ -40,4 +40,30 @@ router.post(
   }
 );
 
+router.post('/play-billing-subscription',async(req,res)=>{
+  try {
+    const NEW_SUBSCRIPTIONS = new SUBSCRIPTIONS({
+      cust_id: req.body.custId,
+      planName: req.body.planName,
+      planValidity: req.body.planValidity,
+      status: "Active",
+    });
+    await NEW_SUBSCRIPTIONS.save();
+    const query = {
+      userID: req.body.custId,
+    };
+    const data = {
+      $set: {
+        subscriptionPlan: req.body.planName,
+        subscriptionDuration:
+          req.body.planValidity,
+        lastPaymentDate: new Date(),
+      },
+    };
+    await USERS.updateOne(query, data);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+})
+
 module.exports = router;

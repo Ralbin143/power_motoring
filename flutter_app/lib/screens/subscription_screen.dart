@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +38,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   bool trialUsed = false;
 
+  String selectedPlanName = "";
+  String selectedPlan = "";
+
   // GOOGLE PAY A
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
 
@@ -57,43 +58,34 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
     _inAppPurchase.purchaseStream.listen((purchaseDetailsList) {
       print('Item purchased: $purchaseDetailsList');
+      _listenToPurchaseUpdated(purchaseDetailsList);
     });
     // _inAppPurchase.connect();
     super.initState();
   }
 
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.purchased) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Purchase Successful!'),
+          ),
+        );
+      } else {}
+    });
+  }
+
 // GOOGLE START
-  void initiatePurchase() async {
-    const Set<String> _kIds = <String>{'01235', '01234', '1233'};
-    final ProductDetailsResponse response =
-        await InAppPurchase.instance.queryProductDetails(_kIds);
+  void initiatePurchase(value) async {
+    ProductDetailsResponse productDetailsResponse =
+        await _inAppPurchase.queryProductDetails({value});
 
-    List<ProductDetails> products = response.productDetails;
-
-    // final ProductDetails productDetails = ;
-
-    final ProductDetailsResponse productDetailResponse =
-        await _inAppPurchase.queryProductDetails(response.toSet());
+    ProductDetails productDetails = productDetailsResponse.productDetails.first;
 
     final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetailResponse);
-    InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-// if (_isConsumable(productDetails)) {
-//   InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
-// } else {
-//   InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-// }
-// From here the purchase flow will be handled by the underlying store.
-// Updates will be delivered to the `InAppPurchase.instance.purchaseStream`.
-    // -------------------------[OLD]---------------------
-    // ProductDetailsResponse productDetailsResponse =
-    //     await _inAppPurchase.queryProductDetails({'01235'});
-
-    // ProductDetails productDetails = productDetailsResponse.productDetails.first;
-
-    // final PurchaseParam purchaseParam =
-    //     PurchaseParam(productDetails: productDetails);
-    // _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+        PurchaseParam(productDetails: productDetails);
+    _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
   }
 // GOOGLE END
 
@@ -181,6 +173,35 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }
   }
 
+  var payUrl = Uri.https(apiURl, '/api/payment/play-billing-subscription');
+
+  void addSubscription() async {
+    final prefs = await SharedPreferences.getInstance();
+    var data = {
+      "custId": prefs.getString("userID"),
+      "planName": selectedPlanName,
+      "planValidity": selectedPlan
+    };
+    var response = await http.post(
+      payUrl,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+    final json = jsonDecode(response.body);
+
+    if (json == "Live") {
+      prefs.setBool("subsStatus", true);
+      setState(() {
+        isSubscribed = true;
+      });
+    } else {
+      prefs.setBool("subsStatus", false);
+      setState(() {
+        isSubscribed = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,16 +241,197 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ),
                       const SizedBox(height: 20),
                       _subscription(),
-                      ElevatedButton(
-                        onPressed: () {
-                          initiatePurchase();
-                        },
-                        child: Text('Google PAY'),
-                      )
+                      _playSubscription(),
                     ],
                   ),
           ),
         ),
+      ),
+    );
+  }
+
+  SizedBox _playSubscription() {
+    return SizedBox(
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                'Google Play',
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      initiatePurchase("01235");
+                      setState(() {
+                        selectedPlanName = "Silver";
+                        selectedPlan = "1";
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Silver',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '60',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '1 Month',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      initiatePurchase("01234");
+                      setState(() {
+                        selectedPlanName = "Gold";
+                        selectedPlan = "6";
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Gold',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '360',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '6 Months',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      initiatePurchase("1233");
+                      setState(() {
+                        selectedPlanName = "Platinum";
+                        selectedPlan = "12";
+                      });
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Platinum',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '600',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '12 Months',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
