@@ -8,11 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../adMob/banner_ad.dart';
@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void loadRunningText() async {
     try {
-      var url = Uri.https(apiURl, 'api/running-text/');
+      var url = Uri.http(apiURl, 'api/running-text/');
 
       var response = await http.get(
         url,
@@ -504,7 +504,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void fetchManufacturers() async {
-    var url = Uri.https(apiURl, 'api/manufacturer/all_manufacturers');
+    var url = Uri.http(apiURl, 'api/manufacturer/all_manufacturers');
     // 'app-server.powermotoring.com', 'api/manufacturer/all_manufacturers');
     var response =
         await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
@@ -582,13 +582,13 @@ class _MyDrawerState extends State<MyDrawer> {
                     fontSize: 24,
                   ),
                 ),
-                Text(
-                  widget.mobileNo,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
+                // Text(
+                //   widget.mobileNo,
+                //   style: const TextStyle(
+                //     color: Colors.white,
+                //     fontSize: 18,
+                //   ),
+                // ),
                 Text(
                   widget.email,
                   style: const TextStyle(

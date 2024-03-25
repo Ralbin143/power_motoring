@@ -115,7 +115,6 @@ class _VehicleDescriptionWidgetState extends State<VehicleDescriptionWidget> {
                         });
                       },
                       child: Container(
-                        width: 100,
                         decoration: BoxDecoration(
                           color: _containerIndex == 0
                               ? Colors.black
@@ -147,7 +146,6 @@ class _VehicleDescriptionWidgetState extends State<VehicleDescriptionWidget> {
                         });
                       },
                       child: Container(
-                        width: 100,
                         decoration: BoxDecoration(
                           color: _containerIndex == 1
                               ? Colors.black

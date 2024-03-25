@@ -10,11 +10,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:power_motoring/data/bloc/subscription_bloc.dart';
 import 'package:power_motoring/data/repository/subscription_repository.dart';
 import 'package:power_motoring/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+
 import 'const/urls.dart';
 import 'firebase_api.dart';
 import 'screens/splash_screen.dart';
@@ -46,7 +47,7 @@ void main() async {
 }
 
 void checkSubscriptionStatus() async {
-  var url = Uri.https(apiURl, '/api/user/check-subscription-status');
+  var url = Uri.http(apiURl, '/api/user/check-subscription-status');
 
   final prefs = await SharedPreferences.getInstance();
 

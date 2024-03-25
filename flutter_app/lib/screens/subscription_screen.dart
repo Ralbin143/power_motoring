@@ -92,7 +92,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void isTrialUsed() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString("userID");
-    var url = Uri.https(apiURl, '/api/subscription/is-trial-used');
+    var url = Uri.http(apiURl, '/api/subscription/is-trial-used');
     var data = {
       "cust_id": id,
     };
@@ -123,7 +123,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   void loadSubsscriptionData() async {
-    var url = Uri.https(apiURl, '/api/user/check-subscription-data');
+    var url = Uri.http(apiURl, '/api/user/check-subscription-data');
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -145,7 +145,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     });
   }
 
-  var url = Uri.https(apiURl, '/api/user/check-subscription-status');
+  var url = Uri.http(apiURl, '/api/user/check-subscription-status');
   void checkSubscriptionStatus() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -173,7 +173,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }
   }
 
-  var payUrl = Uri.https(apiURl, '/api/payment/play-billing-subscription');
+  var payUrl = Uri.http(apiURl, '/api/payment/play-billing-subscription');
 
   void addSubscription() async {
     final prefs = await SharedPreferences.getInstance();
@@ -241,7 +241,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ),
                       const SizedBox(height: 20),
                       _subscription(),
-                      _playSubscription(),
                     ],
                   ),
           ),
@@ -254,6 +253,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     return SizedBox(
       child: Column(
         children: [
+          const SizedBox(height: 60),
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -262,7 +262,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                'Google Play',
+                'Pay through Google Play Store',
                 style: GoogleFonts.poppins(
                   textStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -313,7 +313,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                             Text(
-                              '1 Month',
+                              '30 Days',
                               style: GoogleFonts.poppins(
                                 textStyle: const TextStyle(),
                               ),
@@ -365,7 +365,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                             Text(
-                              '6 Months',
+                              '180 Days',
                               style: GoogleFonts.poppins(
                                 textStyle: const TextStyle(),
                               ),
@@ -417,7 +417,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                               ),
                             ),
                             Text(
-                              '12 Months',
+                              '360 Days',
                               style: GoogleFonts.poppins(
                                 textStyle: const TextStyle(),
                               ),
@@ -489,7 +489,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             annotations: <GaugeAnnotation>[
                               GaugeAnnotation(
                                   widget: Text(
-                                    '${(currentDateValue).toStringAsFixed(0)} day(s)',
+                                    '${(currentDateValue).toStringAsFixed(0)} days',
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold),
@@ -540,7 +540,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 )
               ],
             )
-          : _notSubscribedContainer(),
+          : Column(
+              children: [
+                _notSubscribedContainer(),
+              ],
+            ),
     );
   }
 
@@ -571,115 +575,103 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               ),
         subscriptions.isEmpty
             ? const CircularProgressIndicator.adaptive()
-            : SizedBox(
-                height: 120,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: subscriptions.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: GestureDetector(
-                        onTap: () {
-                          openRazorpayPaymentSheet(
-                            int.parse(subscriptions[index]
-                                    ['subscriptionAmount']) /
-                                .98 *
-                                100,
-                            subscriptions[index]['plan_name'],
-                            subscriptions[index]['planValidity'],
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: activePlan == index
-                                ? Colors.black
-                                : Colors.amber,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
+            : Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        'Pay through UPI,Card, Netbanking etc',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
-                          child: Column(
-                            children: [
-                              Text(
-                                subscriptions[index]!['plan_name'],
-                                style: TextStyle(
-                                  color: activePlan == index
-                                      ? Colors.amber
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: subscriptions.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 15),
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            openRazorpayPaymentSheet(
+                              int.parse(subscriptions[index]
+                                      ['subscriptionAmount']) *
+                                  100,
+                              subscriptions[index]['plan_name'],
+                              subscriptions[index]['planValidity'],
+                            );
+                          },
+                          child: Container(
+                            width: 100,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: activePlan == index
+                                  ? Colors.white
+                                  : Colors.green[600],
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                              Wrap(
-                                children: [
-                                  Text(
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    subscriptions[index]!['plan_name'],
+                                    style: TextStyle(
+                                      color: activePlan == index
+                                          ? Colors.amber
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
                                     subscriptions[index]!['subscriptionAmount']
                                         .toString(),
                                     style: TextStyle(
                                       color: activePlan == index
                                           ? Colors.amber
-                                          : Colors.black,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w900,
+                                          : Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
                                     ),
                                   ),
-                                  const Text(
-                                    "*",
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Text(
-                                "${subscriptions[index]['planValidity']} Month(s)",
-                                style: TextStyle(
-                                  color: activePlan == index
-                                      ? Colors.amber
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w700,
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Text(
+                                    "${subscriptions[index]['planValidity']} Days",
+                                    style: TextStyle(
+                                      color: activePlan == index
+                                          ? Colors.amber
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
         const SizedBox(height: 20),
-        Text(
-          '* Payment gateway charges extra',
-          style: GoogleFonts.poppins(
-            textStyle: const TextStyle(
-              color: Colors.brown,
-              fontSize: 15,
-            ),
-          ),
-        ),
+        _playSubscription(),
         const SizedBox(height: 10),
-        const Text(
-          "Does my subscription auto renew",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          "No! You have to make payment once the subscription expire!",
-          style: GoogleFonts.poppins(),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Text(
-          "There is no refund once payment done",
-          style: GoogleFonts.poppins(),
-        ),
       ],
     );
   }
@@ -689,7 +681,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       isLoading = true;
     });
     try {
-      var url = Uri.https(apiURl, 'api/subscription/subscription-list');
+      var url = Uri.http(apiURl, 'api/subscription/subscription-list');
       var response = await http.get(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -746,7 +738,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      var url = Uri.https(apiURl, '/api/subscription/new-subscription');
+      var url = Uri.http(apiURl, '/api/subscription/new-subscription');
       var data = {
         "paymentID": 'trial',
         "custID": prefs.getString('userID'),

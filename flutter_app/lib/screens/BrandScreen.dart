@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
+
 import '../adMob/banner_ad.dart';
 import '../components/brand/brand_title_view.dart';
 import '../const/urls.dart';
@@ -439,7 +440,7 @@ class _BrandScreenState extends State<BrandScreen> {
   }
 
   void fetchVehicles() async {
-    var url = Uri.https(apiURl, 'api/vehicles/get_manufacturer_vehicle');
+    var url = Uri.http(apiURl, 'api/vehicles/get_manufacturer_vehicle');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -460,7 +461,7 @@ class _BrandScreenState extends State<BrandScreen> {
       selectedCategory = value;
       isLoading = true;
     });
-    var url = Uri.https(apiURl, 'api/vehicles/get_manufacturer_vehicle_filter');
+    var url = Uri.http(apiURl, 'api/vehicles/get_manufacturer_vehicle_filter');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -478,7 +479,7 @@ class _BrandScreenState extends State<BrandScreen> {
 
   void searchFilter(String query) async {
     query = query.toLowerCase();
-    var url = Uri.https(apiURl, 'api/vehicles/live_search_vehicle');
+    var url = Uri.http(apiURl, 'api/vehicles/live_search_vehicle');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},

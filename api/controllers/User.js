@@ -153,16 +153,27 @@ const checkSubscriptionStatus = async (req, res) => {
         return result;
       }
       const currentDatexxx = new Date();
-      if (addDaysToDate(userData[0].lastPaymentDate, 3) > currentDatexxx) {
+      if (addDaysToDate(userData[0].lastPaymentDate, 7) > currentDatexxx) {
         return res.status(200).json("Live");
       } else {
         return res.status(200).json("Inactive");
       }
     } else {
-      const nextMonthSameDate = getNextMonthSameDate(
-        userData[0].lastPaymentDate,
-        userData[0].subscriptionDuration
-      );
+
+      function addDaysToDate(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+      }
+      
+      const nextMonthSameDate = addDaysToDate(userData[0].lastPaymentDate, parseInt(userData[0].subscriptionDuration))
+      
+      // const nextMonthSameDate = getNextMonthSameDate(
+      //   userData[0].lastPaymentDate,
+      //   userData[0].subscriptionDuration
+      // );
+
+
 
       const currentDatexxx = new Date();
       if (nextMonthSameDate > currentDatexxx) {
@@ -192,6 +203,12 @@ const currentSubscriptionData = async (req, res) => {
       const today = new Date();
 
       // Calculate total days between last payment date and next month's same date
+      // const daysBetweenPayments = Math.ceil(
+      //   (nextMonthSameDate - userData[0].lastPaymentDate) /
+      //     (1000 * 60 * 60 * 24)
+      // );
+
+     
       const daysBetweenPayments = Math.ceil(
         (nextMonthSameDate - userData[0].lastPaymentDate) /
           (1000 * 60 * 60 * 24)
@@ -215,29 +232,44 @@ const currentSubscriptionData = async (req, res) => {
         }
 
         const remainingDaysx = Math.ceil(
-          (addDaysToDate(userData[0].lastPaymentDate, 7) - today) /
+          (addDaysToDate(userData[0].lastPaymentDate, 6) - today) /
             (1000 * 60 * 60 * 24)
         );
         return res.status(200).json({
-          maxDays: 7,
+          maxDays: 6,
           daysSinceLastPayment: remainingDaysx,
-          expiryDate: moment(
-            addDaysToDate(userData[0].lastPaymentDate, 7)
+          expiryDate: moment( 
+            addDaysToDate(userData[0].lastPaymentDate, 6)
           ).format("DD-MM-YYYY"),
         });
       } else {
+
+        function addDaysToDate(date, days) {
+          const result = new Date(date);
+          result.setDate(result.getDate() + days);
+          return result;
+        }
         var maxDayString = daysBetweenPayments + 1;
 
+        var maxDaysxx  = parseInt( userData[0].subscriptionDuration)
+        var dateDiff  = (parseInt( userData[0].subscriptionDuration)-1)
+ 
+
         return res.status(200).json({
-          maxDays: maxDayString,
-          daysSinceLastPayment: remainingDays,
-          expiryDate: moment(nextMonthSameDate).format("DD-MM-YYYY"),
+          maxDays: parseInt( userData[0].subscriptionDuration)-1,
+          // maxDays: maxDayString,
+          daysSinceLastPayment: maxDaysxx - daysSinceLastPayment,
+          // expiryDate: moment(3).format("DD-MM-YYYY"),
+          expiryDate: moment(
+            addDaysToDate(userData[0].lastPaymentDate, maxDaysxx-1)
+          ).format("DD-MM-YYYY"),
         });
       }
     } else {
       return res.status(200).json();
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json(error);
   }
 };

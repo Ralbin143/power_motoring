@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../const/apiConst.dart';
 import '../const/urls.dart';
-import 'already_login_with_other_device.dart';
 import 'home_screen.dart';
 
 class MainAuthScreen extends StatefulWidget {
@@ -132,7 +131,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      var url = Uri.https(apiURl, '/api/user/register-with-email');
+      var url = Uri.http(apiURl, '/api/user/register-with-email');
       var data = {
         "userID": userCredential.user!.uid,
         'fullName': userCredential.user!.displayName ?? "",

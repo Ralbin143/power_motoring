@@ -8,9 +8,9 @@ function Pricing() {
         <strong> 1. Subscription Plans</strong>
       </p>
       <p> Power Motoring offers three subscription plans: </p>
-      <p>Silver Plan: Rs 50* per month </p>
-      <p>Gold Plan: Rs 300* for 6 months </p>
-      <p>Platinum Plan: Rs 500* for 1 year </p>
+      <p>Silver Plan: Rs 60* per 30 days </p>
+      <p>Gold Plan: Rs 360* for 180 days </p>
+      <p>Platinum Plan: Rs 600* for 360 days </p>
       <p>
         <strong>2. Introductory Price</strong>{" "}
       </p>
@@ -24,21 +24,21 @@ function Pricing() {
         <strong>3. Features by Subscription Tier</strong>{" "}
       </p>
       <p>
-        Silver Plan (Rs 50* per month):
+        Silver Plan (Rs 60* per 30 days):
         <ul>
           <li>Ad-free experience within the app.</li>
           <li>Advanced search functionality.</li>
         </ul>
       </p>
       <p>
-        Gold Plan (Rs 300* for 6 months):
+        Gold Plan (Rs 360* for 180 days):
         <ul>
           <li>Ad-free experience within the app.</li>
           <li> Enhanced search functionality.</li>
         </ul>
       </p>
       <p>
-        Platinum Plan (Rs 500* for 1 year):
+        Platinum Plan (Rs 600* for 360 days):
         <ul>
           <li>Ad-free experience within the app.</li>
           <li> Enhanced search functionality.</li>
@@ -115,22 +115,22 @@ function Pricing() {
           <tbody>
             <tr>
               <td>Silver</td>
-              <td>1 month</td>
-              <td>Rs 50*</td>
+              <td>30 days</td>
+              <td>Rs 60*</td>
 
               <td>Ad-free, Advanced Search.</td>
             </tr>
             <tr>
               <td>Gold</td>
-              <td>6 months</td>
-              <td>Rs 300*</td>
+              <td>180 days</td>
+              <td>Rs 360*</td>
 
               <td>Ad-free, Advanced Search.</td>
             </tr>
             <tr>
               <td>Platinum</td>
-              <td>1 year</td>
-              <td>Rs 500*</td>
+              <td>360 days</td>
+              <td>Rs 600*</td>
 
               <td>Ad-free, Advanced Search.</td>
             </tr>
