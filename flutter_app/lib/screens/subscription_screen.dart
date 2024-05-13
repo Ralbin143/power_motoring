@@ -81,72 +81,11 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     ProductDetailsResponse productDetailsResponse =
         await _inAppPurchase.queryProductDetails({value});
 
-<<<<<<< Updated upstream
     ProductDetails productDetails = productDetailsResponse.productDetails.first;
 
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: productDetails);
     _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
-=======
-    List<ProductDetails> products = response.productDetails;
-
-    late PurchaseParam purchaseParam;
-
-    if (Platform.isAndroid) {
-      // NOTE: If you are making a subscription purchase/upgrade/downgrade, we recommend you to
-      // verify the latest status of you your subscription by using server side receipt validation
-      // and update the UI accordingly. The subscription purchase status shown
-      // inside the app may not be accurate.
-      final GooglePlayPurchaseDetails? oldSubscription =
-          _getOldSubscription(productDetails, purchases);
-
-      purchaseParam = GooglePlayPurchaseParam(
-          productDetails: productDetails,
-          changeSubscriptionParam: (oldSubscription != null)
-              ? ChangeSubscriptionParam(
-                  oldPurchaseDetails: oldSubscription,
-                  prorationMode: ProrationMode.immediateWithTimeProration,
-                )
-              : null);
-    } else {
-      purchaseParam = PurchaseParam(
-        productDetails: productDetails,
-      );
-    }
-
-    if (productDetails.id == _kConsumableId) {
-      _inAppPurchase.buyConsumable(
-          purchaseParam: purchaseParam, autoConsume: _kAutoConsume);
-    } else {
-      _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
-    }
-// ---------------[NEW]----------------------
-
-    // final ProductDetails productDetails = ;
-
-    // final ProductDetailsResponse productDetailResponse =
-    //     await _inAppPurchase.queryProductDetails(response.toSet());
-
-    // final PurchaseParam purchaseParam =
-    //     PurchaseParam(productDetails: productDetailResponse);
-    // InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-// if (_isConsumable(productDetails)) {
-//   InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
-// } else {
-//   InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-// }
-// From here the purchase flow will be handled by the underlying store.
-// Updates will be delivered to the `InAppPurchase.instance.purchaseStream`.
-    // -------------------------[OLD]---------------------
-    // ProductDetailsResponse productDetailsResponse =
-    //     await _inAppPurchase.queryProductDetails({'01235'});
-
-    // ProductDetails productDetails = productDetailsResponse.productDetails.first;
-
-    // final PurchaseParam purchaseParam =
-    //     PurchaseParam(productDetails: productDetails);
-    // _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
->>>>>>> Stashed changes
   }
 // GOOGLE END
 
@@ -638,101 +577,101 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ? const CircularProgressIndicator.adaptive()
             : Column(
                 children: [
-                  const SizedBox(height: 30),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Pay through UPI,Card, Netbanking etc',
-                        style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // const SizedBox(height: 30),
+                  // Container(
+                  //   width: double.infinity,
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.grey[200],
+                  //   ),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     child: Text(
+                  //       'Pay through UPI,Card, Netbanking etc',
+                  //       style: GoogleFonts.poppins(
+                  //         textStyle: const TextStyle(
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // SizedBox(
+                  //   height: 100,
+                  //   child: ListView.separated(
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemCount: subscriptions.length,
+                  //     separatorBuilder: (context, index) =>
+                  //         const SizedBox(width: 15),
+                  //     itemBuilder: (context, index) {
+                  //       return GestureDetector(
+                  //         onTap: () {
+                  //           openRazorpayPaymentSheet(
+                  //             int.parse(subscriptions[index]
+                  //                     ['subscriptionAmount']) *
+                  //                 100,
+                  //             subscriptions[index]['plan_name'],
+                  //             subscriptions[index]['planValidity'],
+                  //           );
+                  //         },
+                  //         child: Container(
+                  //           width: 100,
+                  //           padding: const EdgeInsets.all(10),
+                  //           decoration: BoxDecoration(
+                  //             color: activePlan == index
+                  //                 ? Colors.white
+                  //                 : Colors.green[600],
+                  //             borderRadius: const BorderRadius.all(
+                  //               Radius.circular(10),
+                  //             ),
+                  //           ),
+                  //           child: Column(
+                  //             children: [
+                  //               Expanded(
+                  //                 child: Text(
+                  //                   subscriptions[index]!['plan_name'],
+                  //                   style: TextStyle(
+                  //                     color: activePlan == index
+                  //                         ? Colors.amber
+                  //                         : Colors.white,
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //               Expanded(
+                  //                 child: Text(
+                  //                   subscriptions[index]!['subscriptionAmount']
+                  //                       .toString(),
+                  //                   style: TextStyle(
+                  //                     color: activePlan == index
+                  //                         ? Colors.amber
+                  //                         : Colors.white,
+                  //                     fontWeight: FontWeight.bold,
+                  //                     fontSize: 20,
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //               Expanded(
+                  //                 child: Text(
+                  //                   "${subscriptions[index]['planValidity']} Days",
+                  //                   style: TextStyle(
+                  //                     color: activePlan == index
+                  //                         ? Colors.amber
+                  //                         : Colors.white,
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  const SizedBox(height: 20),
+                  _playSubscription(),
                   const SizedBox(height: 10),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: subscriptions.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(width: 15),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            openRazorpayPaymentSheet(
-                              int.parse(subscriptions[index]
-                                      ['subscriptionAmount']) *
-                                  100,
-                              subscriptions[index]['plan_name'],
-                              subscriptions[index]['planValidity'],
-                            );
-                          },
-                          child: Container(
-                            width: 100,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: activePlan == index
-                                  ? Colors.white
-                                  : Colors.green[600],
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    subscriptions[index]!['plan_name'],
-                                    style: TextStyle(
-                                      color: activePlan == index
-                                          ? Colors.amber
-                                          : Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    subscriptions[index]!['subscriptionAmount']
-                                        .toString(),
-                                    style: TextStyle(
-                                      color: activePlan == index
-                                          ? Colors.amber
-                                          : Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "${subscriptions[index]['planValidity']} Days",
-                                    style: TextStyle(
-                                      color: activePlan == index
-                                          ? Colors.amber
-                                          : Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
                 ],
               ),
-        const SizedBox(height: 20),
-        _playSubscription(),
-        const SizedBox(height: 10),
       ],
     );
   }

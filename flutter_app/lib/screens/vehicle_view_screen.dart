@@ -97,13 +97,7 @@ class _VehicleViewState extends State<VehicleView> {
                         vehicle.isNotEmpty
                             ? VehicleDescriptionWidget(
                                 vehicleDescription: vehicle)
-                            : const Center(
-                                child: Column(
-                                  children: [
-                                    VehicleImageSkeleton(),
-                                  ],
-                                ),
-                              ),
+                            : const VehicleImageSkeleton()
                       ],
                     ),
                   ),

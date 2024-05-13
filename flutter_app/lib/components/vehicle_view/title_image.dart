@@ -28,13 +28,18 @@ class _VehicleTitleImageState extends State<VehicleTitleImage> {
     return widget.imageData.isNotEmpty
         ? BlocBuilder<ImageSizeBloc, ImageSizeState>(
             builder: (context, state) {
-              return Image.network(
-                widget.imageData[0]['vehicleImage'],
+              return AnimatedContainer(
                 height: state.size,
+                duration: const Duration(milliseconds: 1100),
+                curve: Curves.easeInOut,
+                child: Image.network(
+                  widget.imageData[0]['vehicleImage'],
+                  height: state.size,
+                ),
               );
             },
           )
-        : const CircularProgressIndicator();
+        : const SizedBox();
   }
 
   void fetchSingleVehicle(data) async {
@@ -56,6 +61,7 @@ class _VehicleTitleImageState extends State<VehicleTitleImage> {
       } else {
         throw Exception('Failed to load vehicle data');
       }
+      // ignore: empty_catches
     } catch (error) {}
   }
 }

@@ -23,6 +23,7 @@ class _VehicleDescriptionWidgetState extends State<VehicleDescriptionWidget> {
   void initState() {
     super.initState();
     _containerIndex = 0;
+    context.read<ImageSizeBloc>().add(ImageMaxSize());
   }
 
   @override
@@ -177,28 +178,29 @@ class _VehicleDescriptionWidgetState extends State<VehicleDescriptionWidget> {
                         });
                       },
                       child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: _containerIndex == 2
-                                ? Colors.black
-                                : Colors.white,
-                            border: Border.all(width: 1),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: _containerIndex == 2
+                              ? Colors.black
+                              : Colors.white,
+                          border: Border.all(width: 1),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            "Colors",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: _containerIndex == 2
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Text(
-                              "Colors",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: _containerIndex == 2
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                          )),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -210,16 +212,17 @@ class _VehicleDescriptionWidgetState extends State<VehicleDescriptionWidget> {
                   color: Color.fromARGB(255, 246, 246, 246)),
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    _containerIndex == 0
-                        ? VehicleSpec(vehicleData: widget.vehicleDescription)
-                        : _containerIndex == 1
-                            ? VehicleVariants(
-                                vehicleData: widget.vehicleDescription)
-                            : VehicleColors(
-                                vehicleData: widget.vehicleDescription),
-                  ],
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  switchInCurve: Curves.easeInExpo,
+                  switchOutCurve: Curves.easeOutExpo,
+                  child: _containerIndex == 0
+                      ? VehicleSpec(vehicleData: widget.vehicleDescription)
+                      : _containerIndex == 1
+                          ? VehicleVariants(
+                              vehicleData: widget.vehicleDescription)
+                          : VehicleColors(
+                              vehicleData: widget.vehicleDescription),
                 ),
               ),
             ),

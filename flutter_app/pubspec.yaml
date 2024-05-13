@@ -122,6 +122,7 @@ flutter:
     - assets\images\battery_cooling.png
     - assets\images\battery_safety.png
     - assets\images\vehicle_type.png
+    - assets\images\drawer-bg.png
 
     - assets\animations\Power Motoring.json
     - assets\animations\car_features.json

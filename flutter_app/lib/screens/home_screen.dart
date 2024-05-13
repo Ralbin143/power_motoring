@@ -11,6 +11,12 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
+import 'package:power_motoring/screens/about_us_screen.dart';
+import 'package:power_motoring/screens/main_auth_screen.dart';
+import 'package:power_motoring/screens/new_privacy_policy.dart';
+import 'package:power_motoring/screens/new_terms_conditions.dart';
+import 'package:power_motoring/screens/pricing_policy.dart';
+import 'package:power_motoring/screens/subscription_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:url_launcher/url_launcher.dart';
@@ -19,12 +25,6 @@ import '../adMob/banner_ad.dart';
 import '../const/urls.dart';
 import '../data/bloc/subscription_bloc.dart';
 import 'BrandScreen.dart';
-import 'about_us_screen.dart';
-import 'main_auth_screen.dart';
-import 'new_privacy_policy.dart';
-import 'new_terms_conditions.dart';
-import 'pricing_policy.dart';
-import 'subscription_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -365,21 +365,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            !isSubscribed
-                                ? {
-                                    _showAlertDialog(context),
-                                    _loadInterstitialAd(manufacturers[index]
-                                        ["manufacturerName"]),
-                                  }
-                                : Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BrandScreen(
-                                        manufacturerName: manufacturers[index]
-                                            ["manufacturerName"],
-                                      ),
-                                    ),
-                                  );
+                            // !isSubscribed
+                            //     ? {
+                            //         _showAlertDialog(context),
+                            //         _loadInterstitialAd(manufacturers[index]
+                            //             ["manufacturerName"]),
+                            //       }
+                            //     : Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => BrandScreen(
+                            //             manufacturerName: manufacturers[index]
+                            //                 ["manufacturerName"],
+                            //           ),
+                            //         ),
+                            //       );
+
+                            // _showAlertDialog(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BrandScreen(
+                                  manufacturerName: manufacturers[index]
+                                      ["manufacturerName"],
+                                ),
+                              ),
+                            );
                           },
                           child: ListTile(
                             title: Container(
@@ -558,226 +569,220 @@ class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 40, 41, 49),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                proPic!.isNotEmpty
-                    ? Image.network(
-                        proPic!,
-                        width: 60,
-                        height: 60,
-                      )
-                    : const SizedBox(),
-                Text(
-                  widget.userName,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: proPic!.isEmpty
+                  ? const SizedBox()
+                  : Image.network(proPic.toString()),
+              accountName: widget.userName.isNotEmpty
+                  ? Text(widget.userName)
+                  : const Text("User Not Logged In"),
+              accountEmail: widget.email.isNotEmpty
+                  ? Text(widget.email)
+                  : const Text('Please login'),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    "assets/images/drawer-bg.png",
                   ),
+                  fit: BoxFit.cover,
                 ),
-                // Text(
-                //   widget.mobileNo,
-                //   style: const TextStyle(
-                //     color: Colors.white,
-                //     fontSize: 18,
-                //   ),
-                // ),
-                Text(
-                  widget.email,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-          widget.userName.isEmpty
-              ? ListTile(
-                  title: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+            SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  widget.userName.isEmpty
+                      ? ListTile(
+                          title: const Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.person,
+                                size: 24.0,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Login & Subscribe',
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainAuthScreen(),
+                              ),
+                            );
+                          },
+                        )
+                      : const SizedBox(),
+                  widget.userName.isNotEmpty
+                      ? ListTile(
+                          title: const Row(children: [
+                            Icon(
+                              Icons.payment,
+                              size: 24.0,
+                            ),
+                            SizedBox(width: 10),
+                            Text('Subscription')
+                          ]),
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const SubscriptionScreen(),
+                              ),
+                            );
+                          },
+                        )
+                      : const SizedBox(),
+                  ListTile(
+                    title: const Row(children: [
                       Icon(
-                        Icons.person,
+                        Icons.privacy_tip,
                         size: 24.0,
                       ),
                       SizedBox(width: 10),
-                      Text(
-                        'Login & Subscribe',
-                      ),
-                    ],
+                      Text('Privacy Policy')
+                    ]),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => const NewPrivacyPolicy(),
+                        ),
+                      );
+                    },
                   ),
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainAuthScreen(),
+                  ListTile(
+                    title: const Row(children: [
+                      Icon(
+                        Icons.privacy_tip,
+                        size: 24.0,
                       ),
-                    );
-                  },
-                )
-              : const SizedBox(),
-          widget.userName.isNotEmpty
-              ? ListTile(
-                  title: const Row(children: [
-                    Icon(
-                      Icons.payment,
-                      size: 24.0,
+                      SizedBox(width: 10),
+                      Text('Pricing Policy')
+                    ]),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => const PricingPolicyScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Row(children: [
+                      Icon(Icons.privacy_tip, size: 24.0),
+                      SizedBox(width: 10),
+                      Text('Terms & Conditions')
+                    ]),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => const NewTermsAndConditions(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Row(
+                      children: [
+                        Icon(
+                          Icons.feedback,
+                          size: 24.0,
+                        ),
+                        SizedBox(width: 10),
+                        Text('About us')
+                      ],
                     ),
-                    SizedBox(width: 10),
-                    Text('Subscription')
-                  ]),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SubscriptionScreen(),
-                      ),
-                    );
-                  },
-                )
-              : const SizedBox(),
-          ListTile(
-            title: const Row(children: [
-              Icon(
-                Icons.privacy_tip,
-                size: 24.0,
-              ),
-              SizedBox(width: 10),
-              Text('Privacy Policy')
-            ]),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const NewPrivacyPolicy(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Row(children: [
-              Icon(
-                Icons.privacy_tip,
-                size: 24.0,
-              ),
-              SizedBox(width: 10),
-              Text('Pricing Policy')
-            ]),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const PricingPolicyScreen(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Row(children: [
-              Icon(Icons.privacy_tip, size: 24.0),
-              SizedBox(width: 10),
-              Text('Terms & Conditions')
-            ]),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const NewTermsAndConditions(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Row(
-              children: [
-                Icon(
-                  Icons.feedback,
-                  size: 24.0,
-                ),
-                SizedBox(width: 10),
-                Text('About us')
-              ],
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const AboutUsScreen(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                Image.asset(
-                  "assets/images/whatsapp-icon-509x512-c9csi2fs.png",
-                  height: 24,
-                ),
-                const SizedBox(width: 10),
-                const Text('Send Feedbacks')
-              ],
-            ),
-            onTap: () async {
-              String phone = "+918075441550";
-              String message = "Hello,";
-              String url = "https://wa.me/$phone?text=${Uri.parse(message)}";
-              // ignore: deprecated_member_use
-              if (await canLaunch(url)) {
-                // ignore: deprecated_member_use
-                await launch(url);
-              } else {
-                throw 'Could not launch $url';
-              }
-            },
-          ),
-          widget.userName.isNotEmpty
-              ? ListTile(
-                  title: const Row(
-                    children: [
-                      Icon(
-                        Icons.logout,
-                        size: 24.0,
-                      ),
-                      SizedBox(width: 10),
-                      Text('Logout')
-                    ],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (builder) => const AboutUsScreen(),
+                        ),
+                      );
+                    },
                   ),
-                  onTap: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("Logout?"),
-                        content: const Text("Are you sure, want to logout?"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                            child: const Text("No"),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Image.asset(
+                          "assets/images/whatsapp-icon-509x512-c9csi2fs.png",
+                          height: 24,
+                        ),
+                        const SizedBox(width: 10),
+                        const Text('Send Feedbacks')
+                      ],
+                    ),
+                    onTap: () async {
+                      String phone = "+918075441550";
+                      String message = "Hello,";
+                      String url =
+                          "https://wa.me/$phone?text=${Uri.parse(message)}";
+                      // ignore: deprecated_member_use
+                      if (await canLaunch(url)) {
+                        // ignore: deprecated_member_use
+                        await launch(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  ),
+                  widget.userName.isNotEmpty
+                      ? ListTile(
+                          title: const Row(
+                            children: [
+                              Icon(
+                                Icons.logout,
+                                size: 24.0,
+                              ),
+                              SizedBox(width: 10),
+                              Text('Logout')
+                            ],
                           ),
-                          TextButton(
-                            onPressed: () {
-                              logoutAction(context);
-                            },
-                            child: const Text("Yes"),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                )
-              : const SizedBox(),
-        ],
+                          onTap: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Logout?"),
+                                content:
+                                    const Text("Are you sure, want to logout?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false);
+                                    },
+                                    child: const Text("No"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      logoutAction(context);
+                                    },
+                                    child: const Text("Yes"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

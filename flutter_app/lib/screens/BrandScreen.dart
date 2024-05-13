@@ -77,14 +77,14 @@ class _BrandScreenState extends State<BrandScreen> {
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               closeAlertDialog();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VehicleView(
-                    data: data,
-                  ),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => VehicleView(
+              //       data: data,
+              //     ),
+              //   ),
+              // );
 
               setState(() {
                 adLoading = false;
@@ -102,6 +102,16 @@ class _BrandScreenState extends State<BrandScreen> {
         onAdFailedToLoad: (err) {
           // print('Failed to load an interstitial ad: ${err.message}');
         },
+      ),
+    );
+
+    // closeAlertDialog();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VehicleView(
+          data: data,
+        ),
       ),
     );
   }
@@ -136,7 +146,8 @@ class _BrandScreenState extends State<BrandScreen> {
                     child: TextField(
                       onChanged: searchFilter,
                       decoration: const InputDecoration.collapsed(
-                          hintText: 'Search...'),
+                        hintText: 'Search...',
+                      ),
                     ),
                   ),
                 ),
@@ -161,34 +172,40 @@ class _BrandScreenState extends State<BrandScreen> {
               height: 10,
             ),
             SingleChildScrollView(
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: uniqueVehicleCategories.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          fetchFilterByCategory(uniqueVehicleCategories[index]);
-                        },
-                        child: Container(
-                          // width: 80,
-                          margin: const EdgeInsets.all(9),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 40, 41, 49),
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              color: uniqueVehicleCategories[index] ==
-                                      selectedCategory
-                                  ? Colors.white
-                                  : const Color.fromARGB(255, 40, 41, 49)),
-                          child: Text(uniqueVehicleCategories[index],
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 1000),
+                switchInCurve: Curves.easeInExpo,
+                switchOutCurve: Curves.easeOutExpo,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: uniqueVehicleCategories.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            fetchFilterByCategory(
+                                uniqueVehicleCategories[index]);
+                          },
+                          child: Container(
+                            // width: 80,
+                            margin: const EdgeInsets.all(9),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 25,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 40, 41, 49),
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                color: uniqueVehicleCategories[index] ==
+                                        selectedCategory
+                                    ? Colors.white
+                                    : const Color.fromARGB(255, 40, 41, 49)),
+                            child: Text(
+                              uniqueVehicleCategories[index],
                               textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
@@ -198,10 +215,12 @@ class _BrandScreenState extends State<BrandScreen> {
                                       ? const Color.fromARGB(255, 40, 41, 49)
                                       : Colors.white,
                                 ),
-                              )),
-                        ),
-                      );
-                    }),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ),
               ),
             ),
             const SizedBox(
@@ -267,7 +286,8 @@ class _BrandScreenState extends State<BrandScreen> {
                               : vehicles.isEmpty
                                   ? Center(
                                       child: Image.asset(
-                                          'assets/images/coming_soon.jpg'))
+                                          'assets/images/coming_soon.jpg'),
+                                    )
                                   : GridView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -283,7 +303,7 @@ class _BrandScreenState extends State<BrandScreen> {
                                           onTap: () {
                                             !isSubscribed
                                                 ? {
-                                                    _showAlertDialog(context),
+                                                    // _showAlertDialog(context),
                                                     _loadInterstitialAd(
                                                         vehicles[index]['_id']),
                                                   }
