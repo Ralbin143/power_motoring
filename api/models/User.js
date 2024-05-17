@@ -57,6 +57,11 @@ const userSchema = mongoose.Schema({
     default: false,
     required: true,
   },
+  preLaunchOfferUsed: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("users", userSchema);

@@ -8,7 +8,17 @@ class SubscriptionRepository {
       final rawData = subscriptionData;
       return rawData;
     } catch (e) {
-      print(e);
+      throw Exception(e);
+    }
+  }
+
+  Future<List> enableLaunchOffer(String custId) async {
+    try {
+      final prelaunchOfferData =
+          await SubscriptionDataProvider().enableLaunchOffer(custId);
+      List<dynamic> rawData = prelaunchOfferData;
+      return rawData;
+    } catch (e) {
       throw Exception(e);
     }
   }

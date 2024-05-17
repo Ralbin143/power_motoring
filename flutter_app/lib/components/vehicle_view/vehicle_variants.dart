@@ -50,6 +50,8 @@ class _VehicleVariantsState extends State<VehicleVariants> {
     final prefs = await SharedPreferences.getInstance();
     final isSubScribeds = prefs.getBool('subsStatus') ?? true;
 
+    BlocProvider.of<SubscriptionBloc>(context).add(CheckSubscriptionEvent());
+
     setState(() {
       isSubscribed = isSubScribeds;
     });
@@ -133,10 +135,7 @@ class _VehicleVariantsState extends State<VehicleVariants> {
               ),
             ),
           ),
-          BlocConsumer<SubscriptionBloc, SubscriptionState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
+          BlocBuilder<SubscriptionBloc, SubscriptionState>(
             builder: (context, state) {
               if (state is SubscriptionStatusState) {
                 if (state.data == "Live") {

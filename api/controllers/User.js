@@ -77,7 +77,7 @@ const activeSubscription = async (req, res) => {
     };
     const data = {
       $set: {
-        subscriptionStatus: "Active",
+        subscriptionStatus: "Live",
       },
     };
     await USERS.updateOne(query, data)
@@ -106,7 +106,7 @@ function getNextMonthSameDate(currentDate, validity) {
   currentDateObject.setDate(currentDay);
 
   // Format the result as a string (you can adjust the format as needed)
-  const nextMonthSameDate = currentDateObject.toISOString().split("T")[0];
+  // const nextMonthSameDate = currentDateObject.toISOString().split("T")[0];
 
   return currentDateObject;
 }
@@ -146,6 +146,8 @@ const checkSubscriptionStatus = async (req, res) => {
       userData[0].subscriptionDuration === ""
     ) {
       return res.status(200).json("Inactive");
+    } else if (userData[0].subscriptionDuration === "x") {
+      return res.status(200).json("Live");
     } else if (userData[0].subscriptionDuration === "0") {
       function addDaysToDate(date, days) {
         const result = new Date(date);
@@ -159,21 +161,21 @@ const checkSubscriptionStatus = async (req, res) => {
         return res.status(200).json("Inactive");
       }
     } else {
-
       function addDaysToDate(date, days) {
         const result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
       }
-      
-      const nextMonthSameDate = addDaysToDate(userData[0].lastPaymentDate, parseInt(userData[0].subscriptionDuration))
-      
+
+      const nextMonthSameDate = addDaysToDate(
+        userData[0].lastPaymentDate,
+        parseInt(userData[0].subscriptionDuration)
+      );
+
       // const nextMonthSameDate = getNextMonthSameDate(
       //   userData[0].lastPaymentDate,
       //   userData[0].subscriptionDuration
       // );
-
-
 
       const currentDatexxx = new Date();
       if (nextMonthSameDate > currentDatexxx) {
@@ -193,8 +195,23 @@ const currentSubscriptionData = async (req, res) => {
       userID: req.body.custID,
     };
     const userData = await USERS.find(query).limit(1);
+    if (userData[0].subscriptionDuration === "x") {
+      const currentDate = new Date();
+      // Set the target date (August 15, 2024)
+      const targetDate = new Date("2024-08-15");
+      // Calculate the difference in milliseconds
+      const differenceMs = targetDate - currentDate;
+      // Convert milliseconds to days
+      const daysUntilTargetDate = Math.ceil(
+        differenceMs / (1000 * 60 * 60 * 24)
+      );
+      return res.status(200).json({
+        maxDays: daysUntilTargetDate,
 
-    if (userData[0].lastPaymentDate !== "") {
+        daysSinceLastPayment: daysUntilTargetDate,
+        expiryDate: "15-08-2024",
+      });
+    } else if (userData[0].lastPaymentDate !== "") {
       const nextMonthSameDate = getNextMonthSameDate(
         userData[0].lastPaymentDate,
         userData[0].subscriptionDuration
@@ -208,7 +225,6 @@ const currentSubscriptionData = async (req, res) => {
       //     (1000 * 60 * 60 * 24)
       // );
 
-     
       const daysBetweenPayments = Math.ceil(
         (nextMonthSameDate - userData[0].lastPaymentDate) /
           (1000 * 60 * 60 * 24)
@@ -238,12 +254,11 @@ const currentSubscriptionData = async (req, res) => {
         return res.status(200).json({
           maxDays: 6,
           daysSinceLastPayment: remainingDaysx,
-          expiryDate: moment( 
+          expiryDate: moment(
             addDaysToDate(userData[0].lastPaymentDate, 6)
           ).format("DD-MM-YYYY"),
         });
       } else {
-
         function addDaysToDate(date, days) {
           const result = new Date(date);
           result.setDate(result.getDate() + days);
@@ -251,17 +266,16 @@ const currentSubscriptionData = async (req, res) => {
         }
         var maxDayString = daysBetweenPayments + 1;
 
-        var maxDaysxx  = parseInt( userData[0].subscriptionDuration)
-        var dateDiff  = (parseInt( userData[0].subscriptionDuration)-1)
- 
+        var maxDaysxx = parseInt(userData[0].subscriptionDuration);
+        var dateDiff = parseInt(userData[0].subscriptionDuration) - 1;
 
         return res.status(200).json({
-          maxDays: parseInt( userData[0].subscriptionDuration)-1,
+          maxDays: parseInt(userData[0].subscriptionDuration) - 1,
           // maxDays: maxDayString,
           daysSinceLastPayment: maxDaysxx - daysSinceLastPayment,
           // expiryDate: moment(3).format("DD-MM-YYYY"),
           expiryDate: moment(
-            addDaysToDate(userData[0].lastPaymentDate, maxDaysxx-1)
+            addDaysToDate(userData[0].lastPaymentDate, maxDaysxx - 1)
           ).format("DD-MM-YYYY"),
         });
       }

@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:power_motoring/data/repository/subscription_repository.dart';
 
 part 'subscription_event.dart';
@@ -9,12 +9,12 @@ class SubscriptionBloc extends Bloc<SubscriptionEvent, SubscriptionState> {
   final SubscriptionRepository _subscriptionRepository;
   SubscriptionBloc(this._subscriptionRepository)
       : super(SubscriptionInitial()) {
-    on<SubscriptionEvent>((event, emit) async {
-      print('object');
+    on<CheckSubscriptionEvent>((event, emit) async {
       emit(SubscriptionInitial());
       try {
         final result =
             await _subscriptionRepository.checkSubscriptionRepository();
+
         emit(SubscriptionStatusState(result));
       } catch (e) {
         emit(SubscriptionErrorState(e.toString()));

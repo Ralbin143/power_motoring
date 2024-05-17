@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:power_motoring/data/repository/subscription_repository.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -67,6 +69,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.purchased) {
+        final bool valid = await _verifyPurchase(purchaseDetails);
+        if (valid) {
+          unawaited(deliverProduct(purchaseDetails));
+        } else {
+          // _handleInvalidPurchase(purchaseDetails);
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Purchase Successful!'),
@@ -74,6 +83,14 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         );
       } else {}
     });
+  }
+
+  Future<void> deliverProduct(PurchaseDetails purchaseDetails) async {
+    addSubscription();
+  }
+
+  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
+    return Future<bool>.value(true);
   }
 
 // GOOGLE START
@@ -104,14 +121,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     final json = jsonDecode(response.body);
 
     trialUsed = json[0]['trialUsed'];
-    print(json[0]['trialUsed']);
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     BlocProvider.of<SubscriptionBloc>(context).add(CheckSubscriptionEvent());
     Navigator.pop(context);
     loadSubsscriptionData();
-    print("Payment Success: ${response.paymentId}");
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -182,6 +197,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       "planName": selectedPlanName,
       "planValidity": selectedPlan
     };
+
     var response = await http.post(
       payUrl,
       headers: {'Content-Type': 'application/json'},
@@ -241,11 +257,27 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ),
                       const SizedBox(height: 20),
                       _subscription(),
+                      isSubscribed ? const SizedBox() : _launchOfferContainer()
                     ],
                   ),
           ),
         ),
       ),
+    );
+  }
+
+  Column _launchOfferContainer() {
+    return Column(
+      children: [
+        const Text(
+            "This offer only valid till August 15th Click the below button to enable Intelligent Search and Ad-free experience"),
+        ElevatedButton(
+          onPressed: () {
+            preLaunchOffer();
+          },
+          child: const Text("Get Launch Offer!"),
+        )
+      ],
     );
   }
 
@@ -813,5 +845,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     } catch (e) {
       debugPrint('Error: $e');
     }
+  }
+
+  void preLaunchOffer() async {
+    final prefs = await SharedPreferences.getInstance();
+    String custId = prefs.getString('uid').toString();
+
+    print(custId);
+
+    final response = await SubscriptionRepository().enableLaunchOffer(custId);
+
+    BlocProvider.of<SubscriptionBloc>(context).add(CheckSubscriptionEvent());
   }
 }

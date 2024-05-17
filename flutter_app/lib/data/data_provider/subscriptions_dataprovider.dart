@@ -27,4 +27,26 @@ class SubscriptionDataProvider {
       throw Exception(e);
     }
   }
+
+  Future<List> enableLaunchOffer(String custId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String custId = prefs.getString("userID").toString();
+      Response response = await http.post(
+        Uri.parse(enablePreLaunchOfferUrl),
+        headers: apiHeader,
+        body: jsonEncode(
+          {"custId": custId},
+        ),
+      );
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        return result;
+      } else {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
 }

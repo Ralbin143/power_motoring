@@ -80,10 +80,52 @@ const isTrialUsed = async (req, res) => {
   }
 };
 
+const newPrelaunchOffer = async (req, res) => {
+  try {
+    // const newSubscription = new Subscription({
+    //   cust_id: req.body.cust_id,
+    //   planName: "Pre-Launch Offer",
+    //   planValidity: 1,
+    //   status: "Launch-Offer",
+    // });
+
+    const query = {
+      userID: req.body.custId,
+    };
+    const data = {
+      $set: {
+        subscriptionPlan: "Pre Launch Offer",
+        subscriptionDuration: "x",
+        lastPaymentDate: new Date(),
+      },
+    };
+    await USERS.updateOne(query, data);
+    // await newSubscription.save();
+    return res.status(200).json(newSubscription);
+    // const query = {
+    //   userID: req.body.custId,
+    // };
+    // const data = {
+    //   $set: {
+    //     preLaunchOfferUsed: true,
+    //   },
+    // };
+    // const dddd = await USERS.updateOne(query, data);
+
+    // console.log(dddd);
+    // const userData = await USERS.find(query);
+    // return res.status(200).json(userData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
+
 module.exports = {
   newSubscription,
   getSubscription,
   getSubscriptionList,
   newSubscriptionrzr,
   isTrialUsed,
+  newPrelaunchOffer,
 };
