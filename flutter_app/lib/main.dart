@@ -47,7 +47,7 @@ void main() async {
 }
 
 void checkSubscriptionStatus() async {
-  var url = Uri.http(apiURl, '/api/user/check-subscription-status');
+  var url = Uri.https(apiURl, '/api/user/check-subscription-status');
 
   final prefs = await SharedPreferences.getInstance();
 

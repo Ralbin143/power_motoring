@@ -28,7 +28,7 @@ class SubscriptionDataProvider {
     }
   }
 
-  Future<List> enableLaunchOffer(String custId) async {
+  Future<String> enableLaunchOffer(String custId) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       String custId = prefs.getString("userID").toString();

@@ -6,4 +6,4 @@ const String checkSubscriptionUrl =
     'https://$appUrl/api/user/check-subscription-status';
 
 const String enablePreLaunchOfferUrl =
-    'https://$appUrl/api/user/check-subscription-status';
+    'https://$appUrl/api/subscription/new-pre-launch-offer';

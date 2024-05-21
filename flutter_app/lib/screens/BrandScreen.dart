@@ -460,7 +460,7 @@ class _BrandScreenState extends State<BrandScreen> {
   }
 
   void fetchVehicles() async {
-    var url = Uri.http(apiURl, 'api/vehicles/get_manufacturer_vehicle');
+    var url = Uri.https(apiURl, 'api/vehicles/get_manufacturer_vehicle');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -481,7 +481,7 @@ class _BrandScreenState extends State<BrandScreen> {
       selectedCategory = value;
       isLoading = true;
     });
-    var url = Uri.http(apiURl, 'api/vehicles/get_manufacturer_vehicle_filter');
+    var url = Uri.https(apiURl, 'api/vehicles/get_manufacturer_vehicle_filter');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -499,7 +499,7 @@ class _BrandScreenState extends State<BrandScreen> {
 
   void searchFilter(String query) async {
     query = query.toLowerCase();
-    var url = Uri.http(apiURl, 'api/vehicles/live_search_vehicle');
+    var url = Uri.https(apiURl, 'api/vehicles/live_search_vehicle');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},

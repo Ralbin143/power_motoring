@@ -44,7 +44,7 @@ class _VehicleTitleImageState extends State<VehicleTitleImage> {
 
   void fetchSingleVehicle(data) async {
     try {
-      var url = Uri.http(apiURl, 'api/vehicles/get_single_vehicle');
+      var url = Uri.https(apiURl, 'api/vehicles/get_single_vehicle');
 
       var response = await http.post(
         url,

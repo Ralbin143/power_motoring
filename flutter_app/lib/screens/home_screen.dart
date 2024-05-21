@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void loadRunningText() async {
     try {
-      var url = Uri.http(apiURl, 'api/running-text/');
+      var url = Uri.https(apiURl, 'api/running-text/');
 
       var response = await http.get(
         url,
@@ -515,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void fetchManufacturers() async {
-    var url = Uri.http(apiURl, 'api/manufacturer/all_manufacturers');
+    var url = Uri.https(apiURl, 'api/manufacturer/all_manufacturers');
     // 'app-server.powermotoring.com', 'api/manufacturer/all_manufacturers');
     var response =
         await http.post(url, body: {'name': 'doodle', 'color': 'blue'});

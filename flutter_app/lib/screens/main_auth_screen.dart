@@ -131,7 +131,7 @@ class _MainAuthScreenState extends State<MainAuthScreen> {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      var url = Uri.http(apiURl, '/api/user/register-with-email');
+      var url = Uri.https(apiURl, '/api/user/register-with-email');
       var data = {
         "userID": userCredential.user!.uid,
         'fullName': userCredential.user!.displayName ?? "",

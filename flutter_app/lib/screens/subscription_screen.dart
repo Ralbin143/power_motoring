@@ -109,7 +109,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void isTrialUsed() async {
     final prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString("userID");
-    var url = Uri.http(apiURl, '/api/subscription/is-trial-used');
+    var url = Uri.https(apiURl, '/api/subscription/is-trial-used');
     var data = {
       "cust_id": id,
     };
@@ -138,7 +138,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   }
 
   void loadSubsscriptionData() async {
-    var url = Uri.http(apiURl, '/api/user/check-subscription-data');
+    var url = Uri.https(apiURl, '/api/user/check-subscription-data');
 
     final prefs = await SharedPreferences.getInstance();
 
@@ -160,7 +160,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     });
   }
 
-  var url = Uri.http(apiURl, '/api/user/check-subscription-status');
+  var url = Uri.https(apiURl, '/api/user/check-subscription-status');
   void checkSubscriptionStatus() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -188,7 +188,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }
   }
 
-  var payUrl = Uri.http(apiURl, '/api/payment/play-billing-subscription');
+  var payUrl = Uri.https(apiURl, '/api/payment/play-billing-subscription');
 
   void addSubscription() async {
     final prefs = await SharedPreferences.getInstance();
@@ -574,7 +574,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             )
           : Column(
               children: [
-                _notSubscribedContainer(),
+                // _notSubscribedContainer(),
               ],
             ),
     );
@@ -713,7 +713,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       isLoading = true;
     });
     try {
-      var url = Uri.http(apiURl, 'api/subscription/subscription-list');
+      var url = Uri.https(apiURl, 'api/subscription/subscription-list');
       var response = await http.get(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -770,7 +770,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      var url = Uri.http(apiURl, '/api/subscription/new-subscription');
+      var url = Uri.https(apiURl, '/api/subscription/new-subscription');
       var data = {
         "paymentID": 'trial',
         "custID": prefs.getString('userID'),
@@ -856,5 +856,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     final response = await SubscriptionRepository().enableLaunchOffer(custId);
 
     BlocProvider.of<SubscriptionBloc>(context).add(CheckSubscriptionEvent());
+    Navigator.pop(context);
   }
 }

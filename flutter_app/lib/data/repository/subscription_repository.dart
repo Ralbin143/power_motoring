@@ -12,11 +12,11 @@ class SubscriptionRepository {
     }
   }
 
-  Future<List> enableLaunchOffer(String custId) async {
+  Future<String> enableLaunchOffer(String custId) async {
     try {
       final prelaunchOfferData =
           await SubscriptionDataProvider().enableLaunchOffer(custId);
-      List<dynamic> rawData = prelaunchOfferData;
+      final rawData = prelaunchOfferData;
       return rawData;
     } catch (e) {
       throw Exception(e);

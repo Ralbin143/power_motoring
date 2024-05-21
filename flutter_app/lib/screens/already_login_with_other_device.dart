@@ -131,7 +131,7 @@ class _AlreadyLoggedInScreenState extends State<AlreadyLoggedInScreen> {
     var deviceID = deviceId;
     final prefs = await SharedPreferences.getInstance();
 
-    var url = Uri.http(apiURl, 'api/user/force_login');
+    var url = Uri.https(apiURl, 'api/user/force_login');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
