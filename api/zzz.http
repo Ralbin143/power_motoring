@@ -1,5 +1,0 @@
-POST http://192.168.29.227:6008/api/manufacturer/add_manufacturer
-{
-    "manufactname":"AAAA",
-    "uploadedFilename":"AAAA",
-}
