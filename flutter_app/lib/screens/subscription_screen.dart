@@ -221,6 +221,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -253,6 +254,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ClipRRect(
                         child: Image.asset(
                           'assets/images/logo.png',
+                          width: 100,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -269,13 +271,42 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Column _launchOfferContainer() {
     return Column(
       children: [
-        const Text(
-            "This offer only valid till August 15th Click the below button to enable Intelligent Search and Ad-free experience"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/subsciption_image.png',
+              width: 200,
+            ),
+          ],
+        ),
+        Text(
+          "This offer only valid till August 31st Click the below button to enable Intelligent Search and Ad-free experience",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.abel(
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             preLaunchOffer();
           },
-          child: const Text("Get Launch Offer!"),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+          ),
+          child: Text(
+            "Get Launch Offer!",
+            style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
         )
       ],
     );
