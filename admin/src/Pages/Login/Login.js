@@ -59,11 +59,13 @@ function Login() {
     display: "flex",
     flexDirection: "column",
     background: "#fff",
+    minWidth: "350px",
   };
 
   return (
     <div>
       <div style={loginContainer}>
+        <h4 className="text-center mt-3">Login</h4>
         {loginLoading ? <LinearProgress /> : ""}
         {loginError ? <Alert color="error">Invalid credentials</Alert> : ""}
         <TextField

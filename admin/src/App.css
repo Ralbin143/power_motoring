@@ -49,7 +49,7 @@ aside {
 
 main {
   padding: 10px;
-  width: 100%;
+  width: calc(100vw - 200px);
   overflow: auto;
   height: 93vh;
   /* height: 100%; */

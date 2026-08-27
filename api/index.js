@@ -39,6 +39,7 @@ const payments = require("./routes/Payments");
 const feedback = require("./routes/Feedback");
 const chalk = require("chalk");
 const running_text = require("./routes/RunningText");
+const UPLOAD_ROUTE = require("./routes/UploadRoute");
 
 app.use("/api/admin", admin);
 app.use("/api/user", user);
@@ -48,10 +49,12 @@ app.use("/api/subscription", subscription);
 app.use("/api/payment", payments);
 app.use("/api/feedbacks", feedback);
 app.use("/api/running-text", running_text);
+app.use("/api/upload", UPLOAD_ROUTE);
 
 const server = http.createServer(app);
 const io = socketIo(server);
 const USER = require("./models/User");
+
 io.of("/socket").on("connection", async (socket) => {
   socket.on("login_status", async (data) => {
     const query = {

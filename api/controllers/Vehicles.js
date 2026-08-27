@@ -4,6 +4,7 @@ const { mongoose } = require("mongoose");
 const chalk = require("chalk");
 
 const addVehicle = asyncHandler(async (req, res) => {
+  const { lastUpdated, status } = req.body;
   const newVehicle = new Vehicles({
     manufacturerType: req.body.manufacturerType,
     vehicleImage: req.body.vehicleImage,
@@ -22,6 +23,8 @@ const addVehicle = asyncHandler(async (req, res) => {
     milage: req.body.milage,
     tyreSize: req.body.tyreSize,
     vehicleCategory: req.body.vehicleCategory,
+    lastUpdated,
+    status,
   });
   try {
     await newVehicle
@@ -48,6 +51,8 @@ const updateVehicle = asyncHandler(async (req, res) => {
     _id: req.body.id,
   };
 
+  const { lastUpdated, status } = req.body;
+
   const data = {
     $set: {
       manufacturerType: req.body.manufacturerType,
@@ -68,8 +73,11 @@ const updateVehicle = asyncHandler(async (req, res) => {
       tyreSize: req.body.tyreSize,
       vehicleCategory: req.body.vehicleCategory,
       vehicleTitleText: req.body.vehicleTitle,
+      lastUpdated,
+      status,
     },
   };
+
   try {
     await Vehicles.updateOne(query, data)
       .then((response) => {
@@ -208,7 +216,6 @@ const getSingleVehicle = asyncHandler(async (req, res) => {
   try {
     await Vehicles.find(query)
       .then((response) => {
-
         return res.status(200).json(response);
       })
       .catch((err) => {

@@ -19,3 +19,6 @@ export const UPDATE_MANUFACTURER = `${BACKEND_BASE_URL}/api/manufacturer/update_
 // Subscriptions
 export const ADD_SUBSCRIPTION = `${BACKEND_BASE_URL}/api/subscription/add_subscription`;
 export const ALL_SUBSCRIPTION = `${BACKEND_BASE_URL}/api/subscription/subscription-list`;
+
+// UPLOAD
+export const UPLOAD_URL = `${BACKEND_BASE_URL}/api/upload`;

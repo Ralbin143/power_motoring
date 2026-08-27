@@ -150,6 +150,7 @@ function Maufacturers() {
             {manufacturerData.map((res, i) => (
               <tr key={i}>
                 <td>{i + 1}</td>
+
                 <td>
                   <img
                     src={`${IMAGE_BASE_URL}manufacturers/${res.manufacturerLogo}`}
@@ -167,7 +168,7 @@ function Maufacturers() {
                       handleopenUpdateManufacturer(
                         res._id,
                         res.manufacturerName,
-                        res.manufacturerLogo
+                        res.manufacturerLogo,
                       )
                     }
                   >

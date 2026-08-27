@@ -27,12 +27,9 @@ const addManufacturer = asyncHandler(async (req, res) => {
 });
 
 const allManufacturers = asyncHandler(async (req, res) => {
- 
   try {
     await Manufacturer.find()
       .then((response) => {
-
-      
         return res.status(200).json({
           data: response,
         });
@@ -50,15 +47,15 @@ const allManufacturers = asyncHandler(async (req, res) => {
 });
 
 const updateManufacturer = asyncHandler(async (req, res) => {
- 
-
   const query = {
     _id: req.body.id,
   };
+  const imagePath = process.env.IMAGE_API_URL;
+  const filePathName = imagePath + "/manuf/";
   const data = {
     $set: {
       manufacturerName: req.body.manufactname,
-      manufacturerLogo: req.uploadedFilename,
+      manufacturerLogo: filePathName + req.uploadedFilename,
     },
   };
   try {

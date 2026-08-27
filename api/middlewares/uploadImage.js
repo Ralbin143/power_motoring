@@ -2,6 +2,18 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 
+const vehicleStorage = multer.diskStorage({
+  destination: function (req, res, cb) {
+    cb(null, path.join(__dirname, "../public/vehicles/"));
+  },
+  filename: function (req, file, cb) {
+    const uniquesuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const filename = file.fieldname + "-" + uniquesuffix + ".png";
+    req.uploadedFilename = filename; // Attach the filename to the request object
+    cb(null, filename);
+  },
+});
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../public/manufacturers/"));
@@ -41,6 +53,10 @@ const feedbackmulterFilter = (req, file, cb) => {
   }
 };
 
+const uploadVehiclePhoto = multer({
+  storage: vehicleStorage,
+});
+
 const uploadPhoto = multer({
   storage: storage,
   fileFilter: multerFilter,
@@ -53,4 +69,4 @@ const uploadFeedbackPhoto = multer({
   // limits: { fileSize: 100000000 },
 });
 
-module.exports = { uploadPhoto, uploadFeedbackPhoto };
+module.exports = { uploadVehiclePhoto, uploadPhoto, uploadFeedbackPhoto };

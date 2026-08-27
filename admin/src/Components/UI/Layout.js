@@ -111,7 +111,7 @@ function Layout() {
         </ul>
       </aside>
       <div className="w-100">
-        <nav className="topbar">
+        {/* <nav className="topbar">
           <div>
             <strong>POWER MOTORING</strong>
           </div>
@@ -184,7 +184,7 @@ function Layout() {
               </MenuItem>
             </Menu>
           </div>
-        </nav>
+        </nav> */}
         <main>
           <Routes>
             <Route path="/Login" element={<Login />} />

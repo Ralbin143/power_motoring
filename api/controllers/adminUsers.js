@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler");
-const { validationResult } = require("express-validator");
 const ADMIN = require("../models/AdminUser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -14,17 +13,15 @@ const createAdminUser = asyncHandler(async (req, res) => {
   });
   await addUser
     .save()
-    .then((response) => {
-    
-    })
-    .catch((err) => {
-     
-    });
+    .then((response) => {})
+    .catch((err) => {});
 });
 
 const Login = asyncHandler(async (req, res) => {
   const { uname, password } = req.body;
-  const findUser = await ADMIN.findOne({ userName: uname });
+  const findUser = await ADMIN.find({ userName: uname });
+
+  console.log("findUser", findUser);
 
   if (findUser) {
     // res.cookie("refreshToken", refreshToken, {
@@ -32,13 +29,13 @@ const Login = asyncHandler(async (req, res) => {
     //   maxAge: 72 * 60 * 60 * 1000,
     // });
 
-    res.json({
-      _id: findUser?._id,
-    //   firstname: findUser?.firstname,
-    //   lastname: findUser?.lastname,
-    //   email: findUser?.email,
-    //   mobile: findUser?.mobile,
-    //   token: generateToken(findUser?._id),
+    return res.json({
+      _id: findUser[0]?._id,
+      //   firstname: findUser?.firstname,
+      //   lastname: findUser?.lastname,
+      //   email: findUser?.email,
+      //   mobile: findUser?.mobile,
+      //   token: generateToken(findUser?._id),
     });
   } else {
     throw new Error("Invalid Credentials");
